@@ -27,7 +27,7 @@ This application serves as a comprehensive editor for managing and organizing ex
 - **Laravel Breeze:** A simple implementation of all of Laravel's authentication features, including login, registration, password reset, email verification, and password confirmation. Breeze provides a minimal and simple starting point for building a Laravel application with authentication.
 
 ### Filament
-- **Filament:** A collection of tools for Laravel to make developing applications faster and more enjoyable. It provides a set of common tools and functionalities that are needed in almost every web application.
+- **Filament:** A package to create customizable admin panels on top of Eloquent models. It provides a set of tools and patterns to help you build modern admin interfaces with complex requirements.
 
 By combining these technologies, this full-stack application delivers a powerful and efficient platform for creating, organizing, and managing exam content.
 
