@@ -1,0 +1,58 @@
+
+# Many-to-many -> belongsToMany<>belongsToMany
+# One-to-many -> hasMany<>belongsTo
+# One-to-one -> hasOne<>belongsTo
+
+models:
+  ExamTemplate:
+    name: string
+    durationInMinutes: integer
+    relationships:
+      belongsToMany: ModuleTemplate
+
+  ModuleTemplate:
+    name: string
+    relationships:
+      hasMany: QuestionGroupTemplate
+      belongsToMany: ExamTemplate
+
+  QuestionGroupTemplate:
+    name: string
+    numberOfQuestions: integer
+    pointsFrom: integer
+    pointsTo: integer
+    relationships:
+      belongsTo: ModuleTemplate, QuestionCategory
+
+  QuestionCategory:
+    name: string
+    relationships:
+      hasMany: QuestionGroupTemplate, Question
+
+  Question:
+    name: string
+    text: text
+    points: integer
+    type: enum:multiple-choice,single-choice,true-or-false,per-digit-match,all-answers-are-good,exact-number-match,cock-match,partial-image-match
+    relationships:
+      belongsTo: QuestionCategory
+      hasMany: Answer
+      belongsToMany: Image, Latex, Audio
+
+  Answer:
+    text: text
+    isCorrect: boolean
+    relationships:
+      belongsTo: Question
+
+  Image:
+    alt: string
+    url: string
+    relationships:
+      belongsToMany: Question
+
+  Latex:
+    text: text
+    relationships:
+      belongsToMany: Question
+
