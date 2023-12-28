@@ -1,9 +1,13 @@
+
+
+<div align="center">
+  <img width="280" height="280" src="/public/logo.png" alt="logo" />
+</div>
+
 # Exam Editor Application
 
 <img src="https://img.shields.io/badge/PHP-8.0.3-blue" alt="PHP Version">
-<div align="center">
-  <img width="180" height="180" src="/public/logo.png" alt="logo" />
-</div>
+
 
 
 
