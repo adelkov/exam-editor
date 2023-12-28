@@ -2,7 +2,9 @@
 
 <img src="https://img.shields.io/badge/PHP-8.0.3-blue" alt="PHP Version">
 
-<img src="/public/logo.png" alt="App logo">
+<img 
+style="display: inline-block; max-width:400px; margin: 0px auto;"
+src="/public/logo.png" alt="App logo">
 
 
 ## Overview
