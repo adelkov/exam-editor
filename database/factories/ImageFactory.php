@@ -23,7 +23,7 @@ class ImageFactory extends Factory
     {
         return [
             'alt' => $this->faker->word(),
-            'url' => $this->faker->url(),
+            'url' => $this->faker->imageUrl(),
             'question_id' => null,
         ];
     }

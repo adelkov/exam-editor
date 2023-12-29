@@ -22,12 +22,18 @@ class ExamTemplateResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('durationInMinutes')
-                    ->required()
-                    ->numeric(),
+                Forms\Components\Section::make('Exam details')
+                    ->description('Enter the exam details.')
+                    ->aside()
+                    ->schema([
+                        Forms\Components\TextInput::make('name')
+                            ->required()
+                            ->maxLength(255),
+                        Forms\Components\TextInput::make('durationInMinutes')
+                            ->required()
+                            ->numeric(),
+                    ]),
+
                 Forms\Components\Select::make('moduleTemplates')
                     ->relationship('moduleTemplates', 'name')
                     ->multiple()
