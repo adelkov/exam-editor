@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -36,5 +37,14 @@ class QuestionCategory extends Model
     public function questions(): HasMany
     {
         return $this->hasMany(Question::class);
+    }
+
+    public static function getForm(): array
+    {
+        return [
+            TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+        ];
     }
 }

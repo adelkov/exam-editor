@@ -2,10 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\QuestionType;
-use App\Filament\Resources\SingleChoiceQuestionResource\Pages;
-use App\Filament\Resources\SingleChoiceQuestionResource\RelationManagers;
-use App\Models\SingleChoiceQuestion;
+use App\Filament\Resources\ModuleTemplateResource\Pages;
+use App\Filament\Resources\ModuleTemplateResource\RelationManagers;
+use App\Models\ModuleTemplate;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -14,34 +13,16 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class SingleChoiceQuestionResource extends Resource
+class ModuleTemplateResource extends Resource
 {
-    protected static ?string $model = SingleChoiceQuestion::class;
-
-    protected static ?string $navigationGroup = 'Questions';
+    protected static ?string $model = ModuleTemplate::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\TextInput::make('points')
-                    ->minValue(1)
-                    ->maxValue(10)
-                    ->required()
-                    ->numeric(),
-                Forms\Components\Select::make('question_category_id')
-                    ->native(false)
-                    ->relationship('questionCategory', 'name')
-                    ->required(),
-                Forms\Components\RichEditor::make('text')
-                    ->required()
-                    ->columnSpanFull(),
-            ]);
+            ->schema(ModuleTemplate::getForm());
     }
 
     public static function table(Table $table): Table
@@ -50,12 +31,7 @@ class SingleChoiceQuestionResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('points')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('type')
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('questionCategory.name')
+                Tables\Columns\TextColumn::make('durationInMinutes')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -90,9 +66,9 @@ class SingleChoiceQuestionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSingleChoiceQuestions::route('/'),
-            'create' => Pages\CreateSingleChoiceQuestion::route('/create'),
-            'edit' => Pages\EditSingleChoiceQuestion::route('/{record}/edit'),
+            'index' => Pages\ListModuleTemplates::route('/'),
+            'create' => Pages\CreateModuleTemplate::route('/create'),
+            'edit' => Pages\EditModuleTemplate::route('/{record}/edit'),
         ];
     }
 }

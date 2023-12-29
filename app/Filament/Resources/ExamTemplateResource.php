@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ExamTemplateResource\Pages;
 use App\Filament\Resources\ExamTemplateResource\RelationManagers;
 use App\Models\ExamTemplate;
+use App\Models\ModuleTemplate;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -27,42 +28,14 @@ class ExamTemplateResource extends Resource
                 Forms\Components\TextInput::make('durationInMinutes')
                     ->required()
                     ->numeric(),
-                Forms\Components\Repeater::make('moduleTemplates')
-                    ->relationship()
+                Forms\Components\Select::make('moduleTemplates')
+                    ->relationship('moduleTemplates', 'name')
+                    ->multiple()
+                    ->preload()
+                    ->required()
                     ->columnSpan(2)
-                    ->columns(2)
-                    ->collapsed()
-                    ->itemLabel(fn(array $state): ?string => $state['name'] ?? "New module template")
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('durationInMinutes')
-                            ->required()
-                            ->numeric(),
-                        Forms\Components\Repeater::make('questionGroupTemplates')
-                            ->relationship()
-                            ->collapsed()
-                            ->columnSpan(2)
-                            ->itemLabel(fn(array $state): ?string => $state['name'] ?? "New question group")
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->required()
-                                    ->maxLength(255),
-                                Forms\Components\TextInput::make('numberOfQuestions')
-                                    ->required()
-                                    ->numeric(),
-                                Forms\Components\TextInput::make('pointsFrom')
-                                    ->required()
-                                    ->numeric(),
-                                Forms\Components\TextInput::make('pointsTo')
-                                    ->required()
-                                    ->numeric(),
-                                Forms\Components\Select::make('question_category_id')
-                                    ->relationship('questionCategory', 'name')
-                                    ->required(),
-                            ])
-                    ]),
+                ->editOptionForm(ModuleTemplate::getForm())
+                ->createOptionForm(ModuleTemplate::getForm())
             ]);
     }
 

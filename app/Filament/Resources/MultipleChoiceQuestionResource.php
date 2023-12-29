@@ -6,6 +6,7 @@ use App\Enums\QuestionType;
 use App\Filament\Resources\MultipleChoiceQuestionResource\Pages;
 use App\Filament\Resources\MultipleChoiceQuestionResource\RelationManagers;
 use App\Models\MultipleChoiceQuestion;
+use App\Models\QuestionCategory;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -18,6 +19,8 @@ use function Pest\Laravel\options;
 class MultipleChoiceQuestionResource extends Resource
 {
     protected static ?string $model = MultipleChoiceQuestion::class;
+
+    protected static ?string $navigationGroup = 'Questions';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -34,6 +37,8 @@ class MultipleChoiceQuestionResource extends Resource
                     ->required()
                     ->numeric(),
                 Forms\Components\Select::make('question_category_id')
+                    ->createOptionForm(QuestionCategory::getForm())
+                    ->editOptionForm(QuestionCategory::getForm())
                     ->native(false)
                     ->relationship('questionCategory', 'name')
                     ->required(),

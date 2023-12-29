@@ -5,13 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\QuestionCategoryResource\Pages;
 use App\Filament\Resources\QuestionCategoryResource\RelationManagers;
 use App\Models\QuestionCategory;
-use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class QuestionCategoryResource extends Resource
 {
@@ -22,11 +19,7 @@ class QuestionCategoryResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
-            ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
-            ]);
+            ->schema(QuestionCategory::getForm());
     }
 
     public static function table(Table $table): Table

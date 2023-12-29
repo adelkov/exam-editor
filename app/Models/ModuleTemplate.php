@@ -2,6 +2,9 @@
 
 namespace App\Models;
 
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -38,5 +41,50 @@ class ModuleTemplate extends Model
     public function examTemplates(): BelongsToMany
     {
         return $this->belongsToMany(ExamTemplate::class);
+    }
+
+
+    public static function getForm(): array
+    {
+        return [
+            TextInput::make('name')
+                ->required()
+                ->maxLength(255),
+            TextInput::make('durationInMinutes')
+                ->required()
+                ->numeric(),
+            Repeater::make('questionGroupTemplates')
+                ->relationship()
+                ->collapsed()
+                ->columnSpan(2)
+                ->itemLabel(fn(array $state): ?string => $state['name'] ?? "New question group")
+                ->schema([
+                    TextInput::make('name')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('numberOfQuestions')
+                        ->required()
+                        ->numeric(),
+                    TextInput::make('pointsFrom')
+                        ->required()
+                        ->numeric(),
+                    TextInput::make('pointsTo')
+                        ->gte('pointsFrom')
+                        ->required()
+                        ->numeric(),
+                    Select::make('question_category_id')
+                        ->options(
+                            QuestionCategory::all()
+                                ->pluck('name', 'id')
+                                ->toArray())
+                        ->relationship('questionCategory', 'name')
+                        ->required()
+                        ->columnSpan(2)
+                        ->preload()
+                        ->native(false)
+                        ->createOptionForm(QuestionCategory::getForm())
+                        ->editOptionForm(QuestionCategory::getForm())
+                ])
+        ];
     }
 }
