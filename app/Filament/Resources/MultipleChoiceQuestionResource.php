@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Enums\QuestionType;
 use App\Filament\Resources\MultipleChoiceQuestionResource\Pages;
 use App\Filament\Resources\MultipleChoiceQuestionResource\RelationManagers;
+use App\Models\Image;
 use App\Models\MultipleChoiceQuestion;
 use App\Models\QuestionCategory;
 use Filament\Forms;
@@ -12,9 +12,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use function Pest\Laravel\options;
 
 class MultipleChoiceQuestionResource extends Resource
 {
@@ -44,6 +41,12 @@ class MultipleChoiceQuestionResource extends Resource
                     ->required(),
                 Forms\Components\RichEditor::make('text')
                     ->required()
+                    ->columnSpanFull(),
+                Forms\Components\Repeater::make('images')
+                    ->itemLabel(fn(array $state): ?string => $state['alt'] ?? "New image")
+                    ->relationship()
+                    ->schema(Image::getForm())
+                    ->collapsed()
                     ->columnSpanFull(),
             ]);
     }

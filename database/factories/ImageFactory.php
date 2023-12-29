@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Question;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 use App\Models\Image;
@@ -23,6 +24,7 @@ class ImageFactory extends Factory
         return [
             'alt' => $this->faker->word(),
             'url' => $this->faker->url(),
+            'question_id' => null,
         ];
     }
 }

@@ -55,9 +55,9 @@ abstract class Question extends Model implements Evaluatable
         return $this->hasMany(Answer::class);
     }
 
-    public function images(): HasMany
+    public function images(): BelongsToMany
     {
-        return $this->hasMany(Image::class);
+        return $this->belongsToMany(Image::class, 'image_question', 'question_id', 'image_id');
     }
 
     public function latexes(): HasMany

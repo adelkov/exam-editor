@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -47,12 +48,25 @@ class ModuleTemplate extends Model
     public static function getForm(): array
     {
         return [
-            TextInput::make('name')
-                ->required()
-                ->maxLength(255),
-            TextInput::make('durationInMinutes')
-                ->required()
-                ->numeric(),
+            Section::make('Module details')
+                ->columns(2)
+                ->aside()
+                ->description('The module details so interesting')
+                ->icon('heroicon-o-rectangle-stack')
+                ->schema([
+                    TextInput::make('name')
+                        ->required()
+                        ->maxLength(255),
+                    TextInput::make('durationInMinutes')
+                        ->required()
+                        ->numeric(),
+                ]),
+            Section::make('Question groups')
+                ->columns(2)
+                ->aside()
+                ->description('The question groups for this module')
+                ->icon('heroicon-o-rectangle-stack')
+                ->schema([
             Repeater::make('questionGroupTemplates')
                 ->relationship()
                 ->collapsed()
@@ -85,6 +99,7 @@ class ModuleTemplate extends Model
                         ->createOptionForm(QuestionCategory::getForm())
                         ->editOptionForm(QuestionCategory::getForm())
                 ])
+            ])
         ];
     }
 }

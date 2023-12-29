@@ -9,7 +9,6 @@ class MultipleChoiceQuestion extends Question
 {
     use HasFactory;
 
-
     public function question()
     {
         return $this->morphOne(Question::class, 'questionable');
