@@ -16,7 +16,8 @@ return new class extends Migration
             $table->string('name');
             $table->text('text');
             $table->integer('points');
-            $table->enum('type', ["multiple-choice","single-choice","true-or-false","per-digit-match","all-answers-are-good","exact-number-match","cock-match","partial-image-match"]);
+            $table->enum('type', ["multiple-choice","single-choice","true-or-false","per-digit-match","all-answers-are-good","exact-number-match","clock-match","partial-image-match", "free-numeric"]);
+
             $table->foreignId('question_category_id');
             $table->timestamps();
         });

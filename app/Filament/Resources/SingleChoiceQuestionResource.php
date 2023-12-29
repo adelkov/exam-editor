@@ -2,18 +2,21 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\QuestionResource\Pages;
-use App\Filament\Resources\QuestionResource\RelationManagers;
-use App\Models\Question;
+use App\Enums\QuestionType;
+use App\Filament\Resources\SingleChoiceQuestionResource\Pages;
+use App\Filament\Resources\SingleChoiceQuestionResource\RelationManagers;
+use App\Models\SingleChoiceQuestion;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class QuestionResource extends Resource
+class SingleChoiceQuestionResource extends Resource
 {
-    protected static ?string $model = Question::class;
+    protected static ?string $model = SingleChoiceQuestion::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -24,25 +27,18 @@ class QuestionResource extends Resource
                 Forms\Components\TextInput::make('name')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('points')
+                    ->minValue(1)
+                    ->maxValue(10)
+                    ->required()
+                    ->numeric(),
+                Forms\Components\Select::make('question_category_id')
+                    ->native(false)
+                    ->relationship('questionCategory', 'name')
+                    ->required(),
                 Forms\Components\RichEditor::make('text')
                     ->required()
                     ->columnSpanFull(),
-                Forms\Components\TextInput::make('points')
-                    ->required()
-                    ->numeric(),
-                Forms\Components\TextInput::make('type')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\Select::make('question_category_id')
-                    ->relationship('questionCategory', 'name')
-                    ->required(),
-                Forms\Components\Repeater::make('images')
-                    ->relationship()
-                    ->schema([
-                        Forms\Components\FileUpload::make('image')
-                            ->image()
-                            ->required(),
-                    ]),
             ]);
     }
 
@@ -92,9 +88,9 @@ class QuestionResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListQuestions::route('/'),
-            'create' => Pages\CreateQuestion::route('/create'),
-            'edit' => Pages\EditQuestion::route('/{record}/edit'),
+            'index' => Pages\ListSingleChoiceQuestions::route('/'),
+            'create' => Pages\CreateSingleChoiceQuestion::route('/create'),
+            'edit' => Pages\EditSingleChoiceQuestion::route('/{record}/edit'),
         ];
     }
 }

@@ -2,15 +2,20 @@
 
 namespace App\Models;
 
+use App\Contracts\Evaluatable;
+use App\Enums\QuestionType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
-class Question extends Model
+abstract class Question extends Model implements Evaluatable
 {
     use HasFactory;
+
+    // Specify the table for all types of questions as I use single table inheritance
+    protected $table = 'questions';
 
     /**
      * The attributes that are mass assignable.
@@ -21,7 +26,6 @@ class Question extends Model
         'name',
         'text',
         'points',
-        'type',
         'question_category_id',
     ];
 
@@ -33,7 +37,13 @@ class Question extends Model
     protected $casts = [
         'id' => 'integer',
         'question_category_id' => 'integer',
+        'type' => QuestionType::class,
     ];
+
+    public function questionType()
+    {
+        return $this->morphTo('questionable');
+    }
 
     public function questionCategory(): BelongsTo
     {
@@ -45,18 +55,18 @@ class Question extends Model
         return $this->hasMany(Answer::class);
     }
 
-    public function images(): BelongsToMany
+    public function images(): HasMany
     {
-        return $this->belongsToMany(Image::class);
+        return $this->hasMany(Image::class);
     }
 
-    public function latexes(): BelongsToMany
+    public function latexes(): HasMany
     {
-        return $this->belongsToMany(Latex::class);
+        return $this->hasMany(Latex::class);
     }
 
-    public function audio(): BelongsToMany
+    public function audio(): HasMany
     {
-        return $this->belongsToMany(Audio::class);
+        return $this->hasMany(Audio::class);
     }
 }

@@ -21,7 +21,7 @@ class QuestionCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name(),
+            'name' => implode(' ', $this->faker->words(2)),
         ];
     }
 }
