@@ -27,6 +27,7 @@ abstract class Question extends Model implements Evaluatable
         'text',
         'points',
         'question_category_id',
+        'is_active',
     ];
 
     /**

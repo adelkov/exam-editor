@@ -14,6 +14,7 @@ trait HasCommonQuestionAttributes
             'text' => $this->faker->text(),
             'points' => $this->faker->numberBetween(0, 10),
             'question_category_id' => QuestionCategory::factory(),
+            'is_active' => $this->faker->boolean(),
         ];
     }
 }

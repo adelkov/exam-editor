@@ -11,7 +11,10 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+
 
 class MultipleChoiceQuestionResource extends Resource
 {
@@ -48,6 +51,8 @@ class MultipleChoiceQuestionResource extends Resource
                     ->schema(Image::getForm())
                     ->collapsed()
                     ->columnSpanFull(),
+                Forms\Components\Toggle::make('is_active')
+                    ->required(),
             ]);
     }
 
@@ -65,6 +70,9 @@ class MultipleChoiceQuestionResource extends Resource
                 Tables\Columns\TextColumn::make('questionCategory.name')
                     ->numeric()
                     ->sortable(),
+                Tables\Columns\ToggleColumn::make('is_active')
+                    ->toggleable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -75,10 +83,49 @@ class MultipleChoiceQuestionResource extends Resource
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
-                //
-            ])
+                Filter::make('created_at')
+                    ->form([
+                        Forms\Components\DatePicker::make('created_from'),
+                        Forms\Components\DatePicker::make('created_until'),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['created_from'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '>=', $date),
+                            )
+                            ->when(
+                                $data['created_until'],
+                                fn(Builder $query, $date): Builder => $query->whereDate('created_at', '<=', $date),
+                            );
+                    }),
+                Filter::make('points')
+                    ->form([
+                        Forms\Components\TextInput::make('points_from')->numeric(),
+                        Forms\Components\TextInput::make('points_to')->numeric(),
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                $data['points_from'],
+                                fn(Builder $query, $points): Builder => $query->where('points','>=' ,$points),
+                            )
+                            ->when(
+                                $data['points_to'],
+                                fn(Builder $query, $points): Builder => $query->where('points', '<=', $points),
+                            );
+
+                    }),
+                Tables\Filters\TernaryFilter::make('is_active')
+                    ->label('Active')
+                    ->native(false)
+                    ->options([
+                        'Yes' => true,
+                        'No' => false,
+                    ]),
+            ], layout: Tables\Enums\FiltersLayout::AboveContent)
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->slideOver(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

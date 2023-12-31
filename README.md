@@ -6,6 +6,7 @@
 
 # Exam Editor Application
 [![Laravel Forge Site Deployment Status](https://img.shields.io/endpoint?url=https%3A%2F%2Fforge.laravel.com%2Fsite-badges%2F61e7f9d4-d17e-492c-ba62-4d601e7329e1%3Fdate%3D1%26commit%3D1&style=plastic)](https://forge.laravel.com/servers/746529/sites/2203975)
+
 <img src="https://img.shields.io/badge/PHP-8.0.3-blue" alt="PHP Version">
 
 

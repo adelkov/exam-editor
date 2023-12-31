@@ -45,6 +45,7 @@ class Image extends Model
                     ->maxLength(255),
                 FileUpload::make('url')
                     ->image()
+                    ->imageEditor()
                     ->maxSize(1024 * 1024 * 2)
                     ->required(),
         ];

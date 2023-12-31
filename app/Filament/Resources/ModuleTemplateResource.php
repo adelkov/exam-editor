@@ -59,7 +59,7 @@ class ModuleTemplateResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            RelationManagers\ExamTemplatesRelationManager::class
         ];
     }
 

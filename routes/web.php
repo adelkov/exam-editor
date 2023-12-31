@@ -26,6 +26,7 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+    clg('hellow world');
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
